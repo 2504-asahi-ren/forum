@@ -21,4 +21,7 @@ public class Comment {
 
     @Column
     private String content;
+
+    @Column
+    private int report_id;
 }

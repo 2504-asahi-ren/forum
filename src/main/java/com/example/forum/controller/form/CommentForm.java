@@ -8,4 +8,5 @@ import lombok.Setter;
 public class CommentForm {
     private int id;
     private String content;
+    private int report_id;
 }
