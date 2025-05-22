@@ -22,10 +22,11 @@ public class ForumController {
      * 投稿内容表示処理
      */
     @GetMapping
-    public ModelAndView top() {
+    public ModelAndView top(@RequestParam(name = "start", defaultValue = "2000-01-01 ") String startDate,
+                            @RequestParam(name = "end", defaultValue = "2100-01-01 ") String endDate) {
         ModelAndView mav = new ModelAndView();
         // 投稿を全件取得
-        List<ReportForm> contentData = reportService.findAllReport();
+        List<ReportForm> contentData = reportService.findAllReport(startDate,endDate);
         // コメントを全件取得
         List<CommentForm> commentData = commentService.findAllComment();
         // 画面遷移先を指定
@@ -126,6 +127,17 @@ public class ForumController {
         // 画面遷移先を指定
         mav.setViewName("/editComment");
         return mav;
+    }
+
+    /*
+     * 投稿削除処理
+     */
+    @DeleteMapping("/deleteComment/{id}")
+    public ModelAndView deleteComment(@PathVariable Integer id) {
+        // 投稿をテーブルに格納
+        commentService.deleteComment(id);
+        // rootへリダイレクト
+        return new ModelAndView("redirect:/");
     }
 
     /*

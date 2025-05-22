@@ -60,7 +60,21 @@ public class CommentService {
         comment.setReport_id(reqComment.getReport_id());
         return comment;
     }
-
+    /*
+     *レコード削除
+     */
+    public void deleteComment(Integer id) {
+        Comment deleteComment = deleteCommentEntity(id);
+        commentRepository.delete(deleteComment);
+    }
+    /*
+     * リクエストから取得した情報をEntityに設定
+     */
+    private Comment deleteCommentEntity(Integer id) {
+        Comment comment = new Comment();
+        comment.setId(id);
+        return comment;
+    }
     /*
      * レコード1件取得
      */

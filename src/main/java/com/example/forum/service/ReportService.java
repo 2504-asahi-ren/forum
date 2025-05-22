@@ -6,7 +6,10 @@ import com.example.forum.repository.entity.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,13 +18,23 @@ public class ReportService {
     ReportRepository reportRepository;
 
     /*
-     * レコード全件取得処理
+     * 指定した日付のレコード全件取得処理
      */
-    public List<ReportForm> findAllReport() {
-        List<Report> results = reportRepository.findAllByOrderByIdDesc();
+    public List<ReportForm> findAllReport(String startDate, String endDate) {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date start;
+        Date end;
+        try {
+             start = sdFormat.parse(startDate + " 00:00:00");
+             end = sdFormat.parse(endDate + " 23:59:59");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        List<Report> results = reportRepository.findByCreatedDateBetweenOrderByIdDesc(start, end);
         List<ReportForm> reports = setReportForm(results);
         return reports;
     }
+
     /*
      * DBから取得したデータをFormに設定
      */
@@ -33,10 +46,12 @@ public class ReportService {
             Report result = results.get(i);
             report.setId(result.getId());
             report.setContent(result.getContent());
+            report.setCreated_date(result.getCreatedDate());
             reports.add(report);
         }
         return reports;
     }
+
     /*
      * レコード追加
      */
@@ -54,6 +69,7 @@ public class ReportService {
         report.setContent(reqReport.getContent());
         return report;
     }
+
     /*
      *レコード削除
      */
@@ -61,6 +77,7 @@ public class ReportService {
         Report deleteReport = deleteReportEntity(id);
         reportRepository.delete(deleteReport);
     }
+
     /*
      * リクエストから取得した情報をEntityに設定
      */
@@ -69,6 +86,7 @@ public class ReportService {
         report.setId(id);
         return report;
     }
+
     /*
      * レコード1件取得
      */
