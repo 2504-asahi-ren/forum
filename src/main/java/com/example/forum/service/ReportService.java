@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ReportService {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        List<Report> results = reportRepository.findByCreatedDateBetweenOrderByIdDesc(start, end);
+        List<Report> results = reportRepository.findByCreatedDateBetweenOrderByUpdatedDateDesc(start, end);
         List<ReportForm> reports = setReportForm(results);
         return reports;
     }
@@ -67,6 +68,11 @@ public class ReportService {
         Report report = new Report();
         report.setId(reqReport.getId());
         report.setContent(reqReport.getContent());
+        Date date = new Date();
+        SimpleDateFormat currentTime  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String update = currentTime.format(date);
+        Date updateDate = dateFormat.parse(update);
+        report.setUpdatedDate(updateDate);
         return report;
     }
 

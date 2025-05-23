@@ -10,14 +10,15 @@
         <h1>匿名掲示板</h1>
     </div>
     <div class="main-contents">
-
 <!--        投稿の絞り込み-->
-        <div class="createDate">
+        <div class="createDate" th:each="start : ${start}" >
+            <div th:each="end : ${end}">
             <form action="./" method="get">
-                日付:<input type="date" name="start" value="${content.start}" >～
-                <input type="date" name="end" value="${end}">
+                日付:<input type="date" name="start" th:value="${start}" >～
+                <input type="date" name="end" th:value="${end}">
                 <input type="submit" value="絞り込み">
             </form>
+            </div>
         </div>
 <!--        投稿の絞り込み終了-->
         <a href="/new">

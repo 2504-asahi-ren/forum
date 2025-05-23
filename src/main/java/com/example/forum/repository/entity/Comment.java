@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "comments")
 @Getter
@@ -24,4 +26,7 @@ public class Comment {
 
     @Column
     private int report_id;
+
+    @Column(name = "created_date", insertable = false, updatable = false)
+    private Date createdDate;
 }

@@ -3,11 +3,15 @@ package com.example.forum.service;
 import com.example.forum.controller.form.CommentForm;
 import com.example.forum.controller.form.ReportForm;
 import com.example.forum.repository.CommentRepository;
+import com.example.forum.repository.ReportRepository;
 import com.example.forum.repository.entity.Comment;
 import com.example.forum.repository.entity.Report;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +19,8 @@ import java.util.List;
 public class CommentService {
     @Autowired
     CommentRepository commentRepository;
-
+    @Autowired
+    ReportRepository reportRepository;
     /*
      * レコード全件取得処理
      */
@@ -45,9 +50,12 @@ public class CommentService {
     /*
      * レコード追加
      */
+    @Transactional
     public void saveComment(CommentForm reqComment) {
         Comment saveComment = setCommentEntity(reqComment);
         commentRepository.save(saveComment);
+        Report reportId = setReportEntity(reqComment);
+        reportRepository.updateUpdatedDate(reportId, LocalDateTime.now());
     }
 
     /*
@@ -60,6 +68,12 @@ public class CommentService {
         comment.setReport_id(reqComment.getReport_id());
         return comment;
     }
+    private Report setReportEntity(CommentForm reqComment) {
+        Report report = new Report();
+        report.setId(reqComment.getReport_id());
+        return report;
+    }
+
     /*
      *レコード削除
      */

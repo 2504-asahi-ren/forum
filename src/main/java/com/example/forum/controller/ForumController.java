@@ -34,6 +34,8 @@ public class ForumController {
         // 投稿データオブジェクトを保管
         mav.addObject("contents", contentData);
         mav.addObject("comments", commentData);
+        mav.addObject("start", startDate);
+        mav.addObject("end", endDate);
         return mav;
     }
 

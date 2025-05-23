@@ -3,8 +3,8 @@ package com.example.forum.repository.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.repository.Temporal;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -22,5 +22,8 @@ public class Report {
 
     @Column(name = "created_date",insertable = false,updatable = false)
     private Date createdDate;
+
+    @Column(name = "updated_date",insertable = false)
+    private Date updatedDate;
 }
 
