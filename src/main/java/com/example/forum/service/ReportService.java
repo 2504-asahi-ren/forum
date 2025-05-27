@@ -26,8 +26,8 @@ public class ReportService {
         Date start;
         Date end;
         try {
-             start = sdFormat.parse(startDate + " 00:00:00");
-             end = sdFormat.parse(endDate + " 23:59:59");
+            start = sdFormat.parse(startDate + " 00:00:00");
+            end = sdFormat.parse(endDate + " 23:59:59");
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
@@ -68,10 +68,16 @@ public class ReportService {
         Report report = new Report();
         report.setId(reqReport.getId());
         report.setContent(reqReport.getContent());
+//        日付を取得
         Date date = new Date();
-        SimpleDateFormat currentTime  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String update = currentTime.format(date);
-        Date updateDate = dateFormat.parse(update);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String update = dateFormat.format(date);
+        Date updateDate;
+        try {
+            updateDate = dateFormat.parse(update);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         report.setUpdatedDate(updateDate);
         return report;
     }

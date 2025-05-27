@@ -21,5 +21,5 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
     public List<Report> findByCreatedDateBetweenOrderByUpdatedDateDesc(Date start, Date end);
     @Modifying
     @Query(value = "UPDATE report SET updated_date = :updateDate WHERE id = :id", nativeQuery = true)
-     void updateUpdatedDate(@Param("id") Report id, @Param("updateDate") LocalDateTime updateDate);
+     void updateUpdatedDate(@Param("id") int id, @Param("updateDate") Date updateDate);
 }

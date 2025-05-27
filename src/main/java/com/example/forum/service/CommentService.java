@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -55,7 +58,17 @@ public class CommentService {
         Comment saveComment = setCommentEntity(reqComment);
         commentRepository.save(saveComment);
         Report reportId = setReportEntity(reqComment);
-        reportRepository.updateUpdatedDate(reportId, LocalDateTime.now());
+
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String update = dateFormat.format(date);
+        Date updateDate;
+        try {
+            updateDate = dateFormat.parse(update);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        reportRepository.updateUpdatedDate(reportId.getId(), updateDate);
     }
 
     /*

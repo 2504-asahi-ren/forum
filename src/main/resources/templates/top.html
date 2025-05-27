@@ -43,11 +43,11 @@
                     <input type="button" value="編集">
                 </a>
             </div>
-            <!--       コメント機能追加     th:if="${comment.report_id==content.id}">-->
+            <!--       コメント機能追加    -->
             <div class="text" th:each="comment : ${comments}">
                 <div th:if="${comment.report_id} == ${content.id}">
                     コメント : <span th:text="${comment.content}"/>
-                    <!--                コメント削除機能-->
+                    <!--             コメント削除機能    -->
                     <div class="deleteComment-button">
                         <form th:action="@{/deleteComment/{id}(id = ${comment.id})}" th:method="delete">
                             <input type="submit" value="削除"/>
@@ -61,14 +61,18 @@
                     </div>
                 </div>
             </div>
-            <div class="comment">
-                <form method="post" action="/comment">
-                    <label>新規コメント</label>
-                    <textarea class="tweet-box" name="content" size="20" maxlength="200"></textarea><br/>
-                    <input type="submit" value="コメントする"/>
-                    <input type="hidden" name="report_id" th:value="${content.id}">
-                </form>
-            </div>
+                <div class="comment">
+                    <form method="post" action="/comment" th:object="${commentModel}">
+                        <!--                    コメント投稿エラー表示-->
+                        <div th:if="${reportId == content.id}">
+                            <div th:each="error : ${commentError}"><span th:text="${error.defaultMessage}"></span></div>
+                        </div>
+                        <label>新規コメント</label>
+                        <textarea class="tweet-box"  th:field="*{content}" size="20" maxlength="200"></textarea><br/>
+                        <input type="submit" value="コメントする"/>
+                        <input type="hidden" name="report_id" th:value="${content.id}">
+                    </form>
+                </div>
         </div>
     </div>
 </body>
